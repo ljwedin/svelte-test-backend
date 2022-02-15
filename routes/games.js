@@ -14,6 +14,30 @@ Card example:
 }
 --------------- ***/
 
+router.get('/', function(req, res, next) {
+    req.app.locals.db.collection('games').find().toArray()
+    .then(results => {
+        console.log(results);
+        res.send(results);
+    })
+});
+
+router.post('/', function(req, res, next) {
+    req.app.locals.db.collection('games').insertOne({
+        game_id: req.body.gameId,
+        player_1: {
+            player_id: req.body.playerOneId,
+            cards: req.body.playerOneCards,
+            placed_groups: req.body.playerOnePlacedGroups
+        },
+        player_2: {
+            player_id: req.body.playerTwoId,
+            cards: req.body.playerTwoCards,
+            placed_groups: req.body.playerTwoPlacedGroups
+        }
+    })
+});
+
 let game = [
     {
         game_id: '',
